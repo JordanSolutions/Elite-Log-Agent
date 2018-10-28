@@ -1,11 +1,7 @@
 ﻿using DW.ELA.Interfaces;
-using DW.ELA.LogModel;
-using DW.ELA.Utility.Json;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Utility.Observable;
 
@@ -14,7 +10,9 @@ namespace Controller
     /// <summary>
     /// This class replays N last log files to observers - to fill up historic data
     /// </summary>
-    public class LogBurstPlayer : BasicObservable<LogEvent>
+    public class LogBurstPlayer : BasicObservable<LogEvent>, 
+        IEnumerable<LogEvent>,
+        IEnumerable
     {
         private readonly string LogDirectory;
         private readonly int filesNumber;
@@ -61,5 +59,9 @@ namespace Controller
                 OnNext(@event);
             OnCompleted();
         }
+
+
+        public IEnumerator<LogEvent> GetEnumerator() => Events.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => Events.GetEnumerator();
     }
 }

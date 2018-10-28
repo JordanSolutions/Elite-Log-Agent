@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace EliteLogAgent.Settings
 {
-    public partial class GeneralSettingsControl : AbstractSettingsControl
+    internal partial class GeneralSettingsControl : AbstractSettingsControl
     {
         private static ILogger Logger = LogManager.GetCurrentClassLogger();
         private ProgressBar progressBarUploadLatest;
