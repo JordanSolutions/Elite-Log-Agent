@@ -37,8 +37,8 @@ build_script:
 - msbuild EliteLogAgent.sln /verbosity:minimal /m /target:Rebuild /p:Configuration=Release /p:Platform="Any CPU" /p:PublishProfile=Release /p:ApplicationVersion=%APPVEYOR_BUILD_VERSION%
 
 after_build:
-- cmd: mkdir merged-executable
-- .\ILMerge\tools\ilmerge.exe /wildcards /out:merged-executable\EliteLogAgent.exe EliteLogAgent\bin\Release\EliteLogAgent.exe EliteLogAgent\bin\Release\*.dll
+- cmd: mkdir portable
+- .\ILMerge\tools\ilmerge.exe /wildcards /out:portable\EliteLogAgent.exe EliteLogAgent\bin\Release\EliteLogAgent.exe EliteLogAgent\bin\Release\*.dll
 
 test_script:
 - .\OpenCover\tools\OpenCover.Console.exe -returntargetcode -register:user -target:"nunit3-console.exe" -targetargs:"DW.ELA.UnitTests\bin\Release\DW.ELA.UnitTests.dll" -output:"coverage.xml"
@@ -50,8 +50,8 @@ after_test:
       bash codecov.sh -f "coverage.xml" -t 9416fcda-0f2f-4ef9-bfaa-a8d27d4bce98
 
 artifacts: 
-- path: merged-executable
-  name: merged-executable
+- path: portable
+  name: ela-portable
 
 deploy:
 
@@ -78,7 +78,7 @@ for:
     release: $(appveyor_build_version)
     auth_token:
       secure: cMLUYhjbQt3D197vZwjRci/zvwagN86wEZtJzX1L3apKsslN44Uo6TUo54vIQVg6
-    artifact: merged-executable
+    artifact: ela-portable
     draft: false
     prerelease: false
     force_update: true
